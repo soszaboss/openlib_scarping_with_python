@@ -91,7 +91,6 @@ def scrape(pagination_links, base_url):
                     'genre':[a.text for a in new_soup.find_all('a', attrs={'data-ol-link-track' : "BookOverview|SubjectClick"})]
                     }
             data.append(book_data)
-            break
         jump_data(f"scraped_data/page_{int(pagination_link[-1]) + 1}.json", data)
         all_data.append(data)
     jump_data('scraped_data/all.json', all_data)
