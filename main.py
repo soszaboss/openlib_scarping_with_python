@@ -77,10 +77,18 @@ def scrape(pagination_links, base_url):
                 title = new_soup.find('h1', attrs={'class':'work-title', 'itemprop':'name'}).text
             except:
                 title = None
+            try :
+                author = new_soup.find('a', attrs={'itemprop': 'author'}).text
+            except:
+                author = None
+            try :
+                publication_date = xpath(new_soup, '//*[@id="contentBody"]/div[1]/div[3]/div[5]/div/div[1]/span')
+            except:
+                publication_date = None
             book_data = {
                     'title': title,
-                    'author': new_soup.find('a', attrs={'itemprop': 'author'}).text, #xpath(new_soup, '//*[@id="contentBody"]/div[1]/div[3]/div[2]/span/h2[2]/a'),
-                    'publication_date': xpath(new_soup, '//*[@id="contentBody"]/div[1]/div[3]/div[5]/div/div[1]/span'),
+                    'author': author, #xpath(new_soup, '//*[@id="contentBody"]/div[1]/div[3]/div[2]/span/h2[2]/a'),
+                    'publication_date': publication_date,
                     'page': page,
                     'language': ' '.join(language),
                     'publishers': f"{', '.join(publishers)}",
