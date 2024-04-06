@@ -60,11 +60,11 @@ def scrape(pagination_links, base_url):
             publishers = [publisher.text for publisher in new_soup.find_all('a', attrs={'itemprop': 'publisher'})]
             try:
                 isbn = [isbn.text for isbn in new_soup.find_all('dd', attrs={'class': 'object', 'itemprop': 'isbn'})]
-                isbn10 = None
-                isbn15 = None
-            except:
                 isbn10 = isbn[0]
                 isbn15 = isbn[1]
+            except:
+                isbn10 = None
+                isbn15 = None
             try:
                 page = new_soup.find('span', attrs={'class':'edition-pages' ,'itemprop': 'numberOfPages'}).text
             except:
