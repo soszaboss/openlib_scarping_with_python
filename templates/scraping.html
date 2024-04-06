@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start scraping</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <main class="h-screen w-full overflow-hidden bg-slate-800  flex items-center justify-center">
+        <div class="h-full  w-full bg-slate-900 p-10  overflow-y-auto flex items-center justify-center  flex-col gap-5 hidden"
+            id="scraping_progress">
+            <div class="loader"></div>
+            <div class="text-center">
+
+                <h1 class="text-xl text-white text-center  font-bold text-sm ">Scraping en cours ...</h1>
+                <p class="text-xl text-white text-center mt-3  text-xs"> cela peut prendre quelques minutes</p>
+                <div class="timer text-xl text-white text-center mt-3" id="timer"></div>
+                <div class="timer text-sm text-white text-center mt-3" id="progress"></div>
+            </div>
+        </div>
+        <div class="h-full w-full bg-slate-900 p-10  overflow-y-auto  flex items-center justify-center  flex-col gap-5"
+            id="start_scraping">
+            <h1 class="text-3xl text-white text-center mt-10 mb-10 font-bold">Data is not scraped yet</h1>
+            <button title="Start scraping" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-5 rounded-md"
+                onclick="handleScrape()">Start scraping</button>
+        </div>
+    </main>
+    <script>
+        const updateTimer = () => {
+            const timer = document.getElementById('timer');
+            let timeElapsed = 0;
+            let estimedTime =  0;
+            setInterval(() => {
+                timeElapsed++;
+                estimedTime--;
+                const minutes = Math.floor(timeElapsed / 60);
+                const seconds = timeElapsed % 60;
+                const formattedTimeLeft = `${minutes}:${seconds < 10 ? '0' : ''}${seconds} ecoule`;
+                timer.innerHTML = formattedTimeLeft;
+                document.getElementById('progress').innerHTML = "jusqu'a 16 minutes estimée"
+            }, 1000);
+        }
+
+        const handleScrape = async () => {
+            document.getElementById('start_scraping').classList.add('hidden')
+            document.getElementById('scraping_progress').classList.remove('hidden')
+            updateTimer();
+            const response = await fetch('/scrape')
+            if (response) {
+                window.location.href = '/'
+            }
+        }
+    </script>
+</body>
+
+</html>
