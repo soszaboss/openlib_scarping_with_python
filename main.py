@@ -77,10 +77,18 @@ def scrape(pagination_links, base_url):
                 title = new_soup.find('h1', attrs={'class':'work-title', 'itemprop':'name'}).text
             except:
                 title = None
+            try :
+                author = new_soup.find('a', attrs={'itemprop': 'author'}).text
+            except:
+                author = None
+            try :
+                publication_date = xpath(new_soup, '//*[@id="contentBody"]/div[1]/div[3]/div[5]/div/div[1]/span')
+            except:
+                publication_date = None
             book_data = {
                     'title': title,
-                    'author': new_soup.find('a', attrs={'itemprop': 'author'}).text, #xpath(new_soup, '//*[@id="contentBody"]/div[1]/div[3]/div[2]/span/h2[2]/a'),
-                    'publication_date': xpath(new_soup, '//*[@id="contentBody"]/div[1]/div[3]/div[5]/div/div[1]/span'),
+                    'author': author, #xpath(new_soup, '//*[@id="contentBody"]/div[1]/div[3]/div[2]/span/h2[2]/a'),
+                    'publication_date': publication_date,
                     'page': page,
                     'language': ' '.join(language),
                     'publishers': f"{', '.join(publishers)}",
@@ -91,7 +99,6 @@ def scrape(pagination_links, base_url):
                     'genre':[a.text for a in new_soup.find_all('a', attrs={'data-ol-link-track' : "BookOverview|SubjectClick"})]
                     }
             data.append(book_data)
-            break
         jump_data(f"scraped_data/page_{int(pagination_link[-1]) + 1}.json", data)
         all_data.append(data)
     jump_data('scraped_data/all.json', all_data)
