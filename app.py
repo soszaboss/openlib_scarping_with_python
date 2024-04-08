@@ -41,7 +41,7 @@ def scrape_data():
     if data != None:
         return data
     base_url = "https://openlibrary.org"
-    paginations_links = get_paginations_links(f"{base_url}/trending/forever")
+    paginations_links = ['/trending/forever?page=1', '/trending/forever?page=2', '/trending/forever?page=3', '/trending/forever?page=4', '/trending/forever?page=5', '/trending/forever?page=6', '/trending/forever?page=7', '/trending/forever?page=8', '/trending/forever?page=9', '/trending/forever?page=10']
     data = scrape(paginations_links, base_url)
     return data
 
